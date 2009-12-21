@@ -46,8 +46,6 @@ stop() ->
 %%
 
 from_web(Url) ->
-	%-- url for test: http://twitter.com/statuses/show/123.xml
-	
 	{ok, {{_HttpVersion, _StatusCode, _Message}, _Headers, Body}} = http:request(Url),
 	{_Xml, _Rest} = xmerl_scan:string(Body).
 
