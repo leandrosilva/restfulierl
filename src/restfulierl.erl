@@ -98,7 +98,7 @@ parse_xml_children([{xmlText, _, _, _, Value, text} | TailElements], ParsedEleme
 	case TextValue of
 		[]  ->
 			parse_xml_children(TailElements, ParsedElements);
-		_   ->
+		_ ->
 			parse_xml_children(TailElements, [TextValue | ParsedElements])
 	end;
 		
@@ -110,8 +110,13 @@ parse_xml_children([], ParsedElements) ->
 	lists:reverse(ParsedElements).
 
 %% parse the element's text value
-parse_xml_text_value("\n  ") ->
-	[];
-	
 parse_xml_text_value(Value) ->
-	Value.
+	% that's not final implementation!
+	Matcher = re:run(Value ++ " ", "\n +"),
+	
+	case Matcher of
+		{match, [{0, _}]} ->
+			[];
+		_ ->
+			Value
+	end.
