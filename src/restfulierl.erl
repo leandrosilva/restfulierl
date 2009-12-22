@@ -67,14 +67,14 @@ parse_resource_content(Body) ->
 	{Xml, _Rest} = xmerl_scan:string(Body),
 	
 	RootElement = parse_xml_element(Xml),
-	{element, Name, Attributes, Children} = RootElement,
+	{Name, Attributes, Children} = RootElement,
 	
 	{resource, {type, xml}, Name, Attributes, Children}.
 
 %% parse single element
 parse_xml_element(Xml) ->
 	{xmlElement, Name, _, _, _, _Parents, _Position, Attributes, Content, _, _, _} = Xml,
-	_ParsedElement = {element, Name, parse_xml_attributes(Attributes), parse_xml_children(Content)}.
+	_ParsedElement = {Name, parse_xml_attributes(Attributes), parse_xml_children(Content)}.
 
 %% parse the element's attributes
 parse_xml_attributes(Attributes) ->
@@ -93,9 +93,15 @@ parse_xml_children(Elements) ->
 	parse_xml_children(Elements, []).
 
 parse_xml_children([{xmlText, _, _, _, Value, text} | TailElements], ParsedElements) ->
-	% TextValue = parse_xml_text_value(HeadElement),
-	parse_xml_children(TailElements, [[Value] | ParsedElements]);
-
+	TextValue = parse_xml_text_value(Value),
+	
+	case TextValue of
+		[]  ->
+			parse_xml_children(TailElements, ParsedElements);
+		_   ->
+			parse_xml_children(TailElements, [TextValue | ParsedElements])
+	end;
+		
 parse_xml_children([HeadElement | TailElements], ParsedElements) ->
 	ParsedElement = parse_xml_element(HeadElement),
 	parse_xml_children(TailElements, [ParsedElement | ParsedElements]);
@@ -104,6 +110,8 @@ parse_xml_children([], ParsedElements) ->
 	lists:reverse(ParsedElements).
 
 %% parse the element's text value
-parse_xml_text_value(TextValue) ->
-	{xmlText, _, _, Value, text} = TextValue,
+parse_xml_text_value("\n  ") ->
+	[];
+	
+parse_xml_text_value(Value) ->
 	Value.
