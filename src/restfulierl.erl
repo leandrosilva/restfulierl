@@ -47,7 +47,7 @@ stop() ->
 
 from_web(Url) ->
 	{ok, {{_HttpVersion, _StatusCode, _Message}, _Headers, Body}} = http:request(Url),
-	{_Xml, _Rest} = xmerl_scan:string(Body).
+	parse_resource_content(Body).
 
 %%
 %% Internal API
@@ -60,3 +60,8 @@ ensure_started(App) ->
         {error, {already_started, App}} ->
             ok
     end.
+
+parse_resource_content(Body) ->
+	{Xml, _Rest} = xmerl_scan:string(Body),
+	{xmlElement, Name, _, _, _, Parents, Position, Attributes, Content, _, _, _} = Xml,
+	{tag, Name, Parents, Position, Attributes, Content}.
