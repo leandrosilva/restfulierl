@@ -53,6 +53,7 @@ from_web(Url) ->
 %% Internal API
 %%
 
+%% ensure that required application is started
 ensure_started(App) ->
     case application:start(App) of
         ok ->
@@ -61,7 +62,48 @@ ensure_started(App) ->
             ok
     end.
 
+%% parse resource content from response's body
 parse_resource_content(Body) ->
 	{Xml, _Rest} = xmerl_scan:string(Body),
-	{xmlElement, Name, _, _, _, Parents, Position, Attributes, Content, _, _, _} = Xml,
-	{tag, Name, Parents, Position, Attributes, Content}.
+	
+	RootElement = parse_xml_element(Xml),
+	{element, Name, Attributes, Children} = RootElement,
+	
+	{resource, {type, xml}, Name, Attributes, Children}.
+
+%% parse single element
+parse_xml_element(Xml) ->
+	{xmlElement, Name, _, _, _, _Parents, _Position, Attributes, Content, _, _, _} = Xml,
+	_ParsedElement = {element, Name, parse_xml_attributes(Attributes), parse_xml_children(Content)}.
+
+%% parse the element's attributes
+parse_xml_attributes(Attributes) ->
+	parse_xml_attributes(Attributes, []).
+
+parse_xml_attributes([HeadAttribute | TailAttributes], ParsedAttributes) ->
+	{xmlAttribute, Name, _, _, _, _, _, _, Value, _} = HeadAttribute,
+	ParsedAttribute = {attribute, Name, Value},
+	parse_xml_attributes(TailAttributes, [ParsedAttribute | ParsedAttributes]);
+
+parse_xml_attributes([], ParsedAttributes) ->
+	lists:reverse(ParsedAttributes).
+	
+%% parse the element's childen
+parse_xml_children(Elements) ->
+	parse_xml_children(Elements, []).
+
+parse_xml_children([{xmlText, _, _, _, Value, text} | TailElements], ParsedElements) ->
+	% TextValue = parse_xml_text_value(HeadElement),
+	parse_xml_children(TailElements, [[Value] | ParsedElements]);
+
+parse_xml_children([HeadElement | TailElements], ParsedElements) ->
+	ParsedElement = parse_xml_element(HeadElement),
+	parse_xml_children(TailElements, [ParsedElement | ParsedElements]);
+
+parse_xml_children([], ParsedElements) ->
+	lists:reverse(ParsedElements).
+
+%% parse the element's text value
+parse_xml_text_value(TextValue) ->
+	{xmlText, _, _, Value, text} = TextValue,
+	Value.
