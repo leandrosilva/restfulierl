@@ -94,7 +94,7 @@ parse_xml_children(Elements) ->
 
 parse_xml_children([{xmlText, _, _, _, Value, text} | TailElements], ParsedElements) ->
 	case TailElements of
-		[{xmlElement, _, _, _, _, _, _, _, _, _, _, _} | _]	 ->
+		[{xmlElement, _, _, _, _, _, _, _, _, _, _, _} | _] ->
 			parse_xml_children(TailElements, ParsedElements);
 		_ ->
 			parse_xml_children(TailElements, [Value | ParsedElements])
