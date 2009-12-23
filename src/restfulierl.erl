@@ -47,7 +47,7 @@ stop() ->
 
 from_web(Url) ->
 	{ok, {{_HttpVersion, _StatusCode, _Message}, _Headers, Body}} = http:request(Url),
-	parse_resource_content(Body).
+	new_resource(Url, Body).
 
 %%
 %% Internal API
@@ -62,14 +62,14 @@ ensure_started(App) ->
             ok
     end.
 
-%% parse resource content from response's body
-parse_resource_content(Body) ->
+%% create new resource record from response's body
+new_resource(Url, Body) ->
 	{Xml, _Rest} = xmerl_scan:string(Body),
 	
 	RootElement = parse_xml_element(Xml),
 	{Name, Attributes, Children} = RootElement,
 	
-	{resource, {type, xml}, Name, Attributes, Children}.
+	_Resource = #resource{url = Url, state = {Name, Attributes, Children}, next_states = [yet_not_implemented]}.
 
 %% parse single element
 parse_xml_element(Xml) ->

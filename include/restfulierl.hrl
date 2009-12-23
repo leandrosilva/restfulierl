@@ -7,4 +7,4 @@
 %% See more about Restfulie initiative on http://restfulie.caelum.com.br.
 %%
 
--record (resource, {url, state, next_states}).
+-record(resource, {url, state = {}, next_states = []}).
