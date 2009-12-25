@@ -1,5 +1,5 @@
 %%
-%% Restfulierl, member of Restfulie initiative.
+%% Restfulierl, a member of Restfulie initiative.
 %%
 %% @author Leandro Silva <leandrodoze@gmail.com>
 %% @copyright 2009 Leandro Silva.
@@ -7,4 +7,4 @@
 %% See more about Restfulie initiative on http://restfulie.caelum.com.br.
 %%
 
--record(resource, {url, state = {}, next_states = []}).
+-record(resource, {uri, state = {}, next_states = []}).

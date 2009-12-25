@@ -1,5 +1,5 @@
 %%
-%% Restfulierl, member of Restfulie initiative.
+%% Restfulierl, a member of Restfulie initiative.
 %%
 %% @author Leandro Silva <leandrodoze@gmail.com>
 %% @copyright 2009 Leandro Silva.
