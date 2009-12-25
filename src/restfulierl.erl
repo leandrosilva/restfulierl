@@ -53,7 +53,10 @@ from_web(Uri) ->
 	
 	ResourceModule1 = smerl:new(ResourceName),
 	{ok, ResourceModule2} = smerl:add_func(ResourceModule1,
-														"test() -> " ++ atom_to_list(ResourceName) ++ "_process ! {self(), state}, test_ok."),
+														"test() -> "
+														++ atom_to_list(ResourceName) ++ "_process ! {self(), state},"
+														++ "receive Msg -> io:format(\"Msg = ~w~n\", [Msg]) end,"
+														++ "test_ok."),
 			
 	ResourceModule3 = smerl:extend(restfulierl_resource, ResourceModule2),
 	smerl:compile(ResourceModule3),
