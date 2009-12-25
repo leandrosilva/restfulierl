@@ -27,10 +27,14 @@ parse(Uri, Xml) ->
 	RootElement = parse_xml_element(Xml),
 	{Name, Attributes, Children} = RootElement,
 	
-	_Resource = #resource{uri = Uri, state = {Name, Attributes, Children}, next_states = [yet_not_implemented]}.
+	_Resource = #resource{
+									uri = Uri,
+									name = Name,
+									state = {Name, Attributes, Children},
+									next_states = [yet_not_implemented]}.
 
 %%
-%% Internal API
+%% Internal APIs
 %%
 
 %% parse single element
