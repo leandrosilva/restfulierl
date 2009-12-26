@@ -13,7 +13,11 @@
 -author('Leandro Silva <leandrodoze@gmail.com>').
 
 -export([from_web/0]).
+-export([get_resource/0]).
 
 from_web() ->
 	restfulierl:start(),
 	restfulierl:from_web("http://twitter.com/statuses/show/123.xml").
+	
+get_resource() ->
+	from_web().
