@@ -17,6 +17,7 @@
 
 %% external api
 -export([from_web/1]).
+-export([get_resource/1]).
 
 -include("restfulierl.hrl").
 -include_lib("xmerl/include/xmerl.hrl").
@@ -49,6 +50,9 @@ from_web(Uri) ->
 	HttpResponse = http:request(Uri),
 	
 	_Resource = restfulierl_resource:from_http_response(Uri, HttpResponse).
+
+get_resource(Uri) ->
+	from_web(Uri).
 
 %%
 %% Internal API
