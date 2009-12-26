@@ -46,24 +46,9 @@ stop() ->
 %%
 
 from_web(Uri) ->
-	{ok, {{_HttpVersion, _StatusCode, _Message}, _Headers, Body}} = http:request(Uri),
+	HttpResponse = http:request(Uri),
 	
-	Resource = restfulierl_content_parser:parse(Uri, Body),
-	ResourceName = Resource#resource.name,
-	
-	ResourceModule1 = smerl:new(ResourceName),
-	{ok, ResourceModule2} = smerl:add_func(ResourceModule1,
-														"test() -> "
-														++ atom_to_list(ResourceName) ++ "_process ! {self(), state},"
-														++ "receive Msg -> io:format(\"Msg = ~w~n\", [Msg]) end,"
-														++ "test_ok."),
-			
-	ResourceModule3 = smerl:extend(restfulierl_resource, ResourceModule2),
-	smerl:compile(ResourceModule3),
-	
-	register(list_to_atom(atom_to_list(ResourceName) ++ "_process"), spawn(ResourceName, loop, [Resource])),
-	
-	ResourceName.
+	_Resource = restfulierl_resource:from_http_response(Uri, HttpResponse).
 
 %%
 %% Internal API

@@ -9,11 +9,11 @@
 
 %% @doc parse for xml mime type.
 
--module(restfulierl_xml_content_parser).
+-module(restfulierl_xml_parser).
 -author('Leandro Silva <leandrodoze@gmail.com>').
 
 %% external api
--export([parse/2]).
+-export([xml_to_resource/2]).
 
 -include("restfulierl.hrl").
 -include_lib("xmerl/include/xmerl.hrl").
@@ -23,7 +23,7 @@
 %%
 
 %% parse a xml (from response's body) to a resource record
-parse(Uri, Xml) ->
+xml_to_resource(Uri, Xml) ->
 	RootElement = parse_xml_element(Xml),
 	{Name, Attributes, Children} = RootElement,
 	
