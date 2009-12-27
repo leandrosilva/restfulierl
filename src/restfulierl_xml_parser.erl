@@ -31,7 +31,12 @@ xml_to_resource(Uri, Xml) ->
 	_Resource = #resource{
 									uri = Uri,
 									state = {Name, Attributes, Children},
-									transitions = [yet_not_implemented]}.
+									transitions = [
+										#transition{
+												name = "google",
+												uri = "http://www.google.com",
+												http_verb = get,
+												action = fun() -> going_to_google end}]}.
 
 %%
 %% Internal APIs

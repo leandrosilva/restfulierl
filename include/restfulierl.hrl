@@ -9,4 +9,4 @@
 
 -record(resource, {uri, state = {}, transitions = []}).
 
--record(transition, {name, uri, http_method}).
+-record(transition, {name, uri, http_verb, action}).
