@@ -7,4 +7,6 @@
 %% See more about Restfulie initiative on http://restfulie.caelum.com.br.
 %%
 
--record(resource, {uri, name, state = {}, next_states = []}).
+-record(resource, {uri, state = {}, transitions = []}).
+
+-record(transition, {name, uri, http_method}).

@@ -16,6 +16,7 @@
 -export([xml_to_resource/2]).
 
 -include("restfulierl.hrl").
+
 -include_lib("xmerl/include/xmerl.hrl").
 
 %%
@@ -29,9 +30,8 @@ xml_to_resource(Uri, Xml) ->
 	
 	_Resource = #resource{
 									uri = Uri,
-									name = Name,
 									state = {Name, Attributes, Children},
-									next_states = [yet_not_implemented]}.
+									transitions = [yet_not_implemented]}.
 
 %%
 %% Internal APIs

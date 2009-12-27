@@ -12,12 +12,14 @@
 -module(restfulierl_test).
 -author('Leandro Silva <leandrodoze@gmail.com>').
 
--export([from_web/0]).
--export([get_resource/0]).
+-include("restfulierl.hrl").
 
-from_web() ->
+-include_lib("eunit/include/eunit.hrl").
+
+from_web_test() ->
 	restfulierl:start(),
-	restfulierl:from_web("http://twitter.com/statuses/show/123.xml").
 	
-get_resource() ->
-	from_web().
+	TestUri = "http://twitter.com/statuses/show/123.xml",
+	
+	Resource = restfulierl:from_web(TestUri),
+	?assertEqual(Resource#resource.uri, TestUri).

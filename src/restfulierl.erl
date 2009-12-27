@@ -20,7 +20,6 @@
 -export([get_resource/1]).
 
 -include("restfulierl.hrl").
--include_lib("xmerl/include/xmerl.hrl").
 
 %%
 %% Operation & Maintenance API
