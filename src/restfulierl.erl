@@ -16,7 +16,6 @@
 -export([start/0, stop/0]).
 
 %% external api
--export([from_web/1]).
 -export([get_resource/1]).
 
 -include("restfulierl.hrl").
@@ -45,13 +44,10 @@ stop() ->
 %% External API
 %%
 
-from_web(Uri) ->
+get_resource(Uri) ->
 	HttpResponse = http:request(Uri),
 	
 	_Resource = restfulierl_resource:from_http_response(Uri, HttpResponse).
-
-get_resource(Uri) ->
-	from_web(Uri).
 
 %%
 %% Internal API

@@ -16,10 +16,10 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
-from_web_test() ->
+get_resource_test() ->
 	restfulierl:start(),
 	
 	TestUri = "http://twitter.com/statuses/show/123.xml",
 	
-	Resource = restfulierl:from_web(TestUri),
+	Resource = restfulierl:get_resource(TestUri),
 	?assertEqual(Resource#resource.uri, TestUri).
