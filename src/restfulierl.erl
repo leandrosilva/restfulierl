@@ -16,7 +16,7 @@
 -export([start/0, stop/0]).
 
 %% external api
--export([get_resource/1]).
+-export([get_resource/1, post_resource/1, put_resource/1, delete_resource/1]).
 
 -include("restfulierl.hrl").
 
@@ -48,6 +48,15 @@ get_resource(Uri) ->
 	HttpResponse = http:request(Uri),
 	
 	_Resource = restfulierl_resource:from_http_response(Uri, HttpResponse).
+	
+post_resource(Resource) ->
+	yet_not_implemented.
+
+put_resource(Resource) ->
+	yet_not_implemented.
+
+delete_resource(Resource) ->
+	yet_not_implemented.
 
 %%
 %% Internal API
