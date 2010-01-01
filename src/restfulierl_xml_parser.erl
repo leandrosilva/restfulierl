@@ -28,16 +28,12 @@ xml_to_resource(Uri, Xml) ->
 	RootElement = parse_xml_element(Xml),
 	{Name, Attributes, Children} = RootElement,
 	
+	{OnlyChildren, OnlyTransitions} = split_children_and_transitions(Children),
+	
 	_Resource = #resource{
 									uri = Uri,
-									state = {Name, Attributes, Children},
-									transitions = [
-										#transition{
-												name = "google",
-												uri = "http://www.google.com"},
-										#transition{
-												name = "yahoo",
-												uri = "http://www.yahoo.com"}]}.
+									state = {Name, Attributes, OnlyChildren},
+									transitions = OnlyTransitions}.
 
 %%
 %% Internal APIs
@@ -51,7 +47,7 @@ parse_xml_element(Xml) ->
 		'atom:link' ->
 			{Rel, Href} = parse_xml_atom_link_attributes(Attributes),
 			
-			_ParsedTransition = #transition{name = Rel, uri = Href};
+			_ParsedElement = #transition{name = Rel, uri = Href};
 		_ ->
 			_ParsedElement = {Name, parse_xml_attributes(Attributes), parse_xml_children(Content)}
 	end.
@@ -97,3 +93,17 @@ parse_xml_children([HeadElement | TailElements], ParsedElements) ->
 
 parse_xml_children([], ParsedElements) ->
 	lists:reverse(ParsedElements).
+
+%% split the children and the transitions
+split_children_and_transitions(Elements) ->
+	split_children_and_transitions(Elements, [], []).
+	
+split_children_and_transitions([{transition, _, _} = HeadElement | TailElements], ExtractedChildren, ExtactedTransitions) ->
+	split_children_and_transitions(TailElements, ExtractedChildren, [HeadElement | ExtactedTransitions]);
+	
+split_children_and_transitions([HeadElement | TailElements], ExtractedChildren, ExtactedTransitions) ->
+	split_children_and_transitions(TailElements, [HeadElement | ExtractedChildren], ExtactedTransitions);
+	
+split_children_and_transitions([], ExtractedChildren, ExtactedTransitions) ->
+	{lists:reverse(ExtractedChildren), lists:reverse(ExtactedTransitions)}.
+	
