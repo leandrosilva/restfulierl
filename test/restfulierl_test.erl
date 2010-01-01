@@ -19,7 +19,10 @@
 get_resource_test() ->
 	restfulierl:start(),
 	
-	TestUri = "http://twitter.com/statuses/show/123.xml",
+	TestUri = "http://restfulie-test.heroku.com/orders/11.xml",
 	
 	Resource = restfulierl:get_resource(TestUri),
-	?assertEqual(Resource#resource.uri, TestUri).
+	
+	?assertEqual(Resource#resource.uri, TestUri),
+	
+	Resource.

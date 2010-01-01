@@ -46,8 +46,14 @@ xml_to_resource(Uri, Xml) ->
 %% parse single element
 parse_xml_element(Xml) ->
 	{xmlElement, Name, _, _, _, _Parents, _Position, Attributes, Content, _, _, _} = Xml,
-	_ParsedElement = {Name, parse_xml_attributes(Attributes), parse_xml_children(Content)}.
-
+	
+	case Name of
+		'atom:link' ->
+			_ParsedTransition = parse_xml_atom_link_attributes(Attributes);
+		_ ->
+			_ParsedElement = {Name, parse_xml_attributes(Attributes), parse_xml_children(Content)}
+	end.
+	
 %% parse the element's attributes
 parse_xml_attributes(Attributes) ->
 	parse_xml_attributes(Attributes, []).
@@ -78,3 +84,12 @@ parse_xml_children([HeadElement | TailElements], ParsedElements) ->
 
 parse_xml_children([], ParsedElements) ->
 	lists:reverse(ParsedElements).
+
+%% parse the atom:link as transition
+parse_xml_atom_link_attributes(Attributes) ->
+	ParsedAttributes = parse_xml_attributes(Attributes),
+	
+	[{attribute, rel, Rel} | NextAttributes] = ParsedAttributes,
+	[{attribute, href, Href} | _] = NextAttributes,
+	
+	_ParsedTransition = #transition{name = Rel, uri = Href}.

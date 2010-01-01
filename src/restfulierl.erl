@@ -49,13 +49,13 @@ get_resource(Uri) ->
 	
 	_Resource = restfulierl_resource:from_http_response(Uri, HttpResponse).
 	
-post_resource(Resource) ->
+post_resource(_Resource) ->
 	yet_not_implemented.
 
-put_resource(Resource) ->
+put_resource(_Resource) ->
 	yet_not_implemented.
 
-delete_resource(Resource) ->
+delete_resource(_Resource) ->
 	yet_not_implemented.
 
 %%
