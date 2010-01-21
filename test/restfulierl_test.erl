@@ -16,9 +16,18 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
-get_resource_test() ->
-	restfulierl:start(),
-	
+%%
+%% Setup
+%%
+
+setup_test() ->
+	restfulierl:start().
+
+%%
+%% Tests
+%%
+
+get_resource_test() ->	
 	TestUri = "http://restfulie-test.heroku.com/orders/11.xml",
 	
 	Resource = restfulierl:get_resource(TestUri),
