@@ -20,7 +20,10 @@
 %% Setup
 %%
 
-setup_test() ->
+restfulierl_test_() ->
+	{setup,	fun setup/0, []}.
+
+setup() ->
 	restfulierl:start().
 
 %%
