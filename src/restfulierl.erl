@@ -47,7 +47,11 @@ stop() ->
 get_resource(Uri) ->
 	HttpResponse = http:request(Uri),
 	
-	_Resource = restfulierl_resource:from_http_response(Uri, HttpResponse).
+	_Resource = restfulierl_resource:from_http_response(Uri, HttpResponse),
+	
+	io:format("------------------~n~n"),
+	io:format("Resource = ~w", [_Resource]),
+	io:format("------------------~n~n").
 	
 post_resource(_Resource) ->
 	yet_not_implemented.

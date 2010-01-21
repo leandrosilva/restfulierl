@@ -30,10 +30,9 @@ xml_to_resource(Uri, Xml) ->
 	
 	{OnlyChildren, OnlyTransitions} = split_children_and_transitions(Children),
 	
-	_Resource = #resource{
-									uri = Uri,
-									state = {Name, Attributes, OnlyChildren},
-									transitions = OnlyTransitions}.
+	_Resource = #resource{uri = Uri,
+						  state = {Name, Attributes, OnlyChildren},
+						  transitions = OnlyTransitions}.
 
 %%
 %% Internal APIs
@@ -64,15 +63,16 @@ parse_xml_attributes([HeadAttribute | TailAttributes], ParsedAttributes) ->
 parse_xml_attributes([], ParsedAttributes) ->
 	lists:reverse(ParsedAttributes).
 	
-%% parse the atom:link as transition
+%% parse the list of atom:link as transition
 parse_xml_atom_link_attributes(Attributes) ->
 	ParsedAttributes = parse_xml_attributes(Attributes),
 
-	[{attribute, rel, Rel} | NextAttributes] = ParsedAttributes,
-	[{attribute, href, Href} | _] = NextAttributes,
-
-	{Rel, Href}.
-		
+	[Transition | _] = [{list_to_atom(Rel), Href} ||
+							{attribute, rel, Rel} <- ParsedAttributes,
+							{attribute, href, Href} <- ParsedAttributes],
+	
+	Transition.
+	
 %% parse the element's childen
 parse_xml_children(Elements) ->
 	parse_xml_children(Elements, []).

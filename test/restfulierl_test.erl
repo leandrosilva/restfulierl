@@ -22,7 +22,7 @@ get_resource_test() ->
 	TestUri = "http://restfulie-test.heroku.com/orders/11.xml",
 	
 	Resource = restfulierl:get_resource(TestUri),
-	
+
 	?assertEqual(Resource#resource.uri, TestUri),
 	
 	Resource.
