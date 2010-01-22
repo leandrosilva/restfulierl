@@ -30,11 +30,25 @@ setup() ->
 %% Tests
 %%
 
-get_resource_test() ->	
-	TestUri = "http://restfulie-test.heroku.com/orders/11.xml",
-	
-	Resource = restfulierl:get_resource(TestUri),
+-define(RESOURCE_URI, "http://restfulie-test.heroku.com/orders/11.xml").
 
-	?assertEqual(Resource#resource.uri, TestUri),
+get_resource_test() ->	
+	Resource = restfulierl:get_resource(?RESOURCE_URI),
+
+	?assertEqual(Resource#resource.uri, ?RESOURCE_URI).
+
+post_new_resource_test() ->
+	Resource = #resource{
+									uri = ?RESOURCE_URI,
+									state = {order, [], []}},
+
+	Response = restfulierl:post_resource(Resource),
 	
-	Resource.
+	?assertMatch({ok, _}, Response).
+	
+post_new_resource_to_uri_test() ->
+	Resource = #resource{state = {order, [], []}},
+
+	Response = restfulierl:post_resource(Resource),
+	
+	?assertMatch(yet_not_implemented, Response).

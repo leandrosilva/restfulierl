@@ -30,9 +30,10 @@ xml_to_resource(Uri, Xml) ->
 	
 	{OnlyChildren, OnlyTransitions} = split_children_and_transitions(Children),
 	
-	_Resource = #resource{uri = Uri,
-						  state = {Name, Attributes, OnlyChildren},
-						  transitions = OnlyTransitions}.
+	_Resource = #resource{
+									uri = Uri,
+						 			state = {Name, Attributes, OnlyChildren},
+				 					transitions = OnlyTransitions}.
 
 %%
 %% Internal APIs
@@ -68,8 +69,8 @@ parse_xml_atom_link_attributes(Attributes) ->
 	ParsedAttributes = parse_xml_attributes(Attributes),
 
 	[Transition | _] = [{list_to_atom(Rel), Href} ||
-							{attribute, rel, Rel} <- ParsedAttributes,
-							{attribute, href, Href} <- ParsedAttributes],
+													{attribute, rel, Rel} <- ParsedAttributes,
+													{attribute, href, Href} <- ParsedAttributes],
 	
 	Transition.
 	

@@ -16,7 +16,7 @@
 -export([start/0, stop/0]).
 
 %% external api
--export([get_resource/1, post_resource/1, put_resource/1, delete_resource/1]).
+-export([get_resource/1, post_resource/1, post_resource/2, put_resource/1, delete_resource/1]).
 
 -include("restfulierl.hrl").
 
@@ -48,9 +48,22 @@ get_resource(Uri) ->
 	HttpResponse = http:request(Uri),
 	
 	_Resource = restfulierl_resource:from_http_response(Uri, HttpResponse).
+
+post_resource(Resource) ->
+	post_resource(Resource, Resource#resource.uri).
+
+post_resource(_Resource, _Transition) when is_atom(_Transition) ->
+	yet_not_implemented;
+
+post_resource(_Resource, Uri) when is_list(Uri) ->
+	Headers = [],
+	ContentType = "application/xml",
+	Body = "<order></order>",
+	HttpOptions = [],
+	Options = [{body_format, string}],
 	
-post_resource(_Resource) ->
-	yet_not_implemented.
+	_Response = http:request(post,
+									{Uri, Headers, ContentType, Body}, HttpOptions, Options).
 
 put_resource(_Resource) ->
 	yet_not_implemented.
