@@ -46,9 +46,16 @@ post_new_resource_test() ->
 	
 	?assertMatch({ok, _}, Response).
 	
+post_new_resource_to_transition_test() ->
+	Resource = #resource{state = {order, [], []}},
+
+	Response = restfulierl:post_resource(Resource, pay),
+
+	?assertMatch(yet_not_implemented, Response).
+	
 post_new_resource_to_uri_test() ->
 	Resource = #resource{state = {order, [], []}},
 
-	Response = restfulierl:post_resource(Resource),
+	Response = restfulierl:post_resource(Resource, ?RESOURCE_URI),
 	
-	?assertMatch(yet_not_implemented, Response).
+	?assertMatch({ok, _}, Response).

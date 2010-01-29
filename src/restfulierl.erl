@@ -33,7 +33,7 @@ start() ->
 		ok.
 
 %% @spec stop() -> ok
-%% @doc Stop the Restfulierl application and dependencies(take care!)
+%% @doc Stop the Restfulierl application and dependencies (take care!).
 stop() ->
 	Res = application:stop(restfulierl),
 	application:stop(xmerl),
@@ -44,30 +44,42 @@ stop() ->
 %% External API
 %%
 
+%% @spec get_resource(Uri) -> Resource
+%% @doc Get a resource from specified Uri.
 get_resource(Uri) ->
 	HttpResponse = http:request(Uri),
 	
 	_Resource = restfulierl_resource:from_http_response(Uri, HttpResponse).
 
+%% @spec post_resource(Resource) -> Response
+%% @doc Post a resource to Resource#resource.uri.
 post_resource(Resource) ->
 	post_resource(Resource, Resource#resource.uri).
 
+%% @spec post_resource(Resource, Transition) -> Response
+%% @doc Post a resource to specified Transition.
 post_resource(_Resource, _Transition) when is_atom(_Transition) ->
 	yet_not_implemented;
 
+%% @spec post_resource(Resource, Uri) -> Response
+%% @doc Post a resource to specified Uri.
 post_resource(Resource, Uri) when is_list(Uri) ->
 	Headers = [],
 	ContentType = "application/xml",
-	Body = restfulierl_xml_marshaler:to_xml(Resource),
+	Body = "<order></order>", %restfulierl_xml_marshaler:to_xml(Resource),
 	HttpOptions = [],
 	Options = [{body_format, string}],
 	
 	_HttpResponse = http:request(post,
 										{Uri, Headers, ContentType, Body}, HttpOptions, Options).
 
+%% @spec put_resource(Resource) -> Response
+%% @doc Put a resource to Resource#resource.uri.
 put_resource(_Resource) ->
 	yet_not_implemented.
 
+%% @spec delete_resource(Resource) -> Response
+%% @doc Delete a resource from Resource#resource.uri.
 delete_resource(_Resource) ->
 	yet_not_implemented.
 

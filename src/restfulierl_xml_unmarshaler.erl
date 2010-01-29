@@ -79,11 +79,12 @@ parse_xml_children(Elements) ->
 	parse_xml_children(Elements, []).
 
 parse_xml_children([{xmlText, _, _, _, Value, text} | TailElements], ParsedElements) ->
+	% WARNING: still having a bug (tha famous "\n")
 	case TailElements of
 		[{xmlElement, _, _, _, _, _, _, _, _, _, _, _} | _] ->
 			parse_xml_children(TailElements, ParsedElements);
 		[] ->
-			parse_xml_children(TailElements, ParsedElements);
+			parse_xml_children(TailElements, [Value | ParsedElements]);
 		_ ->
 			parse_xml_children(TailElements, [Value | ParsedElements])
 	end;
