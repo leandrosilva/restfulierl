@@ -55,10 +55,10 @@ post_resource(Resource) ->
 post_resource(_Resource, _Transition) when is_atom(_Transition) ->
 	yet_not_implemented;
 
-post_resource(_Resource, Uri) when is_list(Uri) ->
+post_resource(Resource, Uri) when is_list(Uri) ->
 	Headers = [],
 	ContentType = "application/xml",
-	Body = "<order></order>",
+	Body = restfulierl_xml_marshaler:to_xml(Resource),
 	HttpOptions = [],
 	Options = [{body_format, string}],
 	

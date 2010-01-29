@@ -26,4 +26,11 @@ from_http_response(Uri, HttpResponse) ->
 	
 	{Xml, _Rest} = xmerl_scan:string(Body),
 	
+	_Resource = from_xml(Uri, Xml).
+	
+%%
+%% Internal API
+%%
+
+from_xml(Uri, Xml) ->
 	_Resource = restfulierl_xml_unmarshaler:to_resource(Uri, Xml).
