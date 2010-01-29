@@ -7,9 +7,9 @@
 %% See more about Restfulie initiative on http://restfulie.caelum.com.br.
 %%
 
-%% @doc parse for xml mime type.
+%% @doc unmarshal a xml to a resource.
 
--module(restfulierl_xml_parser).
+-module(restfulierl_xml_unmarshaler).
 -author('Leandro Silva <leandrodoze@gmail.com>').
 
 %% external api
@@ -23,7 +23,7 @@
 %% External API
 %%
 
-%% parse a xml (from response's body) to a resource record
+%% unmarshal a xml (from response's body) to a resource record
 xml_to_resource(Uri, Xml) ->
 	RootElement = parse_xml_element(Xml),
 	{Name, Attributes, Children} = RootElement,

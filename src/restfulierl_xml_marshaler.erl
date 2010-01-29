@@ -7,23 +7,26 @@
 %% See more about Restfulie initiative on http://restfulie.caelum.com.br.
 %%
 
-%% @doc a Restfuilerl resource.
+%% @doc marshal a resource to a xml.
 
--module(restfulierl_resource).
+-module(restfulierl_xml_marshaler).
 -author('Leandro Silva <leandrodoze@gmail.com>').
 
 %% external api
--export([from_http_response/2]).
+-export([resource_to_xml/2]).
 
 -include("restfulierl.hrl").
+
+-include_lib("xmerl/include/xmerl.hrl").
 
 %%
 %% External API
 %%
 
-from_http_response(Uri, HttpResponse) ->
-	{ok, {{_HttpVersion, _StatusCode, _Message}, _Headers, Body}} = HttpResponse,
-	
-	{Xml, _Rest} = xmerl_scan:string(Body),
-	
-	_Resource = restfulierl_xml_unmarshaler:xml_to_resource(Uri, Xml).
+%% marshal a resource record to a xml
+resource_to_xml(_Uri, _Xml) ->
+	ok.
+
+%%
+%% Internal APIs
+%%
