@@ -62,8 +62,8 @@ post_resource(_Resource, Uri) when is_list(Uri) ->
 	HttpOptions = [],
 	Options = [{body_format, string}],
 	
-	_Response = http:request(post,
-									{Uri, Headers, ContentType, Body}, HttpOptions, Options).
+	_HttpResponse = http:request(post,
+										{Uri, Headers, ContentType, Body}, HttpOptions, Options).
 
 put_resource(_Resource) ->
 	yet_not_implemented.

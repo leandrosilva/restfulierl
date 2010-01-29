@@ -13,7 +13,7 @@
 -author('Leandro Silva <leandrodoze@gmail.com>').
 
 %% external api
--export([xml_to_resource/2]).
+-export([to_resource/2]).
 
 -include("restfulierl.hrl").
 
@@ -24,7 +24,7 @@
 %%
 
 %% unmarshal a xml (from response's body) to a resource record
-xml_to_resource(Uri, Xml) ->
+to_resource(Uri, Xml) ->
 	RootElement = parse_xml_element(Xml),
 	{Name, Attributes, Children} = RootElement,
 	

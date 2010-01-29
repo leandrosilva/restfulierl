@@ -13,7 +13,7 @@
 -author('Leandro Silva <leandrodoze@gmail.com>').
 
 %% external api
--export([resource_to_xml/2]).
+-export([to_xml/1]).
 
 -include("restfulierl.hrl").
 
@@ -24,7 +24,7 @@
 %%
 
 %% marshal a resource record to a xml
-resource_to_xml(_Uri, _Xml) ->
+to_xml(_Resource) ->
 	ok.
 
 %%
