@@ -66,14 +66,7 @@ post_resource(_Resource, _Transition) when is_atom(_Transition) ->
 post_resource(Resource, Uri) when is_list(Uri) ->
 	{resource, _, ResourceState, _} = Resource,
 	
-	Headers = [],
-	ContentType = "application/xml",
-	Body = restfulierl_xml_marshaler:to_xml(ResourceState),
-	HttpOptions = [],
-	Options = [{body_format, string}],
-	
-	_HttpResponse = http:request(post,
-										{Uri, Headers, ContentType, Body}, HttpOptions, Options).
+	_HttpResponse = restfulierl_resource:get_http_response(post, Uri, ResourceState).
 
 %% @spec put_resource(Resource) -> Response
 %% @doc Put a resource to Resource#resource.uri.
