@@ -64,6 +64,10 @@ post_resource(_Resource, _Transition) when is_atom(_Transition) ->
 %% @spec post_resource(Resource, Uri) -> Response
 %% @doc Post a resource to specified Uri.
 post_resource(_Resource, Uri) when is_list(Uri) ->
+	
+	% XmlText = lists:flatten(xmerl:export_simple([_Resource], xmerl_xml)),
+	% io:formart("XML: ~w", [XmlText]),
+	
 	Headers = [],
 	ContentType = "application/xml",
 	Body = "<order></order>", %restfulierl_xml_marshaler:to_xml(Resource),

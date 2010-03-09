@@ -40,14 +40,10 @@ get_resource_test() ->
 	%           [{'created-at',[],["2010-01-01T05:15:45Z"]},
 	%            {'customer-name',[],["Leandro Silva"]},
 	%            {id,[],["11"]},
-	%            {status,[],["unpaid"]},
-	%            {'updated-at',[],["2010-01-01T05:15:45Z"]},
+	%            {status,[],["cancelled"]},
+	%            {'updated-at',[],["2010-02-03T14:07:18Z"]},
 	%            "\n"]},
 	%       [{transition,latest,
-	%            "http://restfulie-test.heroku.com/orders/11"},
-	%        {transition,pay,
-	%            "http://restfulie-test.heroku.com/orders/11/pay"},
-	%        {transition,cancel,
 	%            "http://restfulie-test.heroku.com/orders/11"}]}}
 
 	% matching uri
@@ -68,22 +64,16 @@ get_resource_test() ->
 	?assertMatch({id,[],["11"]}, Id),
 
 	[Status | NextOrderAttributes4] = NextOrderAttributes3,
-	?assertMatch({status,[],["unpaid"]}, Status),
+	?assertMatch({status,[],["cancelled"]}, Status),
 
 	[UpdateAt | _] = NextOrderAttributes4,
-	?assertMatch({'updated-at',[],["2010-01-01T05:15:45Z"]}, UpdateAt),
+	?assertMatch({'updated-at',[],["2010-02-03T14:07:18Z"]}, UpdateAt),
 	
 	% matching transitions
 	OrderTransitions = Resource#resource.transitions,
 	
-	[Latest | NextOrderTransitions1] = OrderTransitions,
-	?assertMatch({transition, latest, "http://restfulie-test.heroku.com/orders/11"}, Latest),
-	
-	[Pay | NextOrderTransitions2] = NextOrderTransitions1,
-	?assertMatch({transition, pay, "http://restfulie-test.heroku.com/orders/11/pay"}, Pay),
-	
-	[Cancel | _] = NextOrderTransitions2,
-	?assertMatch({transition, cancel, "http://restfulie-test.heroku.com/orders/11"}, Cancel).
+	[Latest | _NextOrderTransitions] = OrderTransitions,
+	?assertMatch({transition, latest, "http://restfulie-test.heroku.com/orders/11"}, Latest).
 
 post_new_resource_test() ->
 	Resource = #resource{
