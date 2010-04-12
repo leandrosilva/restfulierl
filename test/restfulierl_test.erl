@@ -17,22 +17,32 @@
 -include_lib("eunit/include/eunit.hrl").
 
 %%
+%% Describing Restfulierl
+%%
+
+describe_restfulierl_test_() ->
+	[fun before_all/0,
+	  fun should_get_a_resource_from_a_valid_uri/0,
+	  fun should_post_a_new_resource_to_its_uri/0,
+	  fun should_post_a_new_resource_to_a_valid_uri/0,
+	  fun should_post_resource_to_one_of_its_transitions/0].
+
+%%
 %% Setup
-%%
-
-restfulierl_test_() ->
-	{setup,	fun setup/0, []}.
-
-setup() ->
-	restfulierl:start().
-
-%%
-%% Tests
 %%
 
 -define(RESOURCE_URI, "http://restfulie-test.heroku.com/orders/11.xml").
 
-get_resource_test() ->	
+before_all() ->
+	restfulierl:start().
+
+%%
+%% Scenary
+%%
+
+should_get_a_resource_from_a_valid_uri() ->
+  io:format(user, "should_get_a_resource_from_a_valid_uri~n", []),
+  
 	Resource = restfulierl:get_resource(?RESOURCE_URI),
 	
 	% {resource,"http://restfulie-test.heroku.com/orders/11.xml",
@@ -75,7 +85,9 @@ get_resource_test() ->
 	[Latest | _NextOrderTransitions] = OrderTransitions,
 	?assertMatch({transition, latest, "http://restfulie-test.heroku.com/orders/11"}, Latest).
 
-post_new_resource_test() ->
+should_post_a_new_resource_to_its_uri() ->
+  io:format(user, "should_post_a_new_resource_to_its_uri~n", []),
+  
 	Resource = #resource{
 									uri = ?RESOURCE_URI,
 									state = {order, [], []}},
@@ -83,17 +95,22 @@ post_new_resource_test() ->
 	Response = restfulierl:post_resource(Resource),
 	
 	?assertMatch({ok, _}, Response).
+
+should_post_a_new_resource_to_a_valid_uri() ->
+  io:format(user, "should_post_a_new_resource_to_a_valid_uri~n", []),
+
+	Resource = #resource{state = {order, [], []}},
+
+	Response = restfulierl:post_resource(Resource, ?RESOURCE_URI),
+
+	?assertMatch({ok, _}, Response).
 	
-post_new_resource_to_transition_test() ->
+should_post_resource_to_one_of_its_transitions() ->
+  io:format(user, "should_post_resource_to_one_of_its_transitions~n", []),
+  
 	Resource = #resource{state = {order, [], []}},
 
 	Response = restfulierl:post_resource(Resource, pay),
 
 	?assertMatch(yet_not_implemented, Response).
-	
-post_new_resource_to_uri_test() ->
-	Resource = #resource{state = {order, [], []}},
-
-	Response = restfulierl:post_resource(Resource, ?RESOURCE_URI),
-	
-	?assertMatch({ok, _}, Response).
+  
