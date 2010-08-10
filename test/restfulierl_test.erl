@@ -22,7 +22,7 @@
 describe_restfulierl_test_() ->
   {"Restfulierl",
     [
-      {"after tests",
+      {"before tests",
         {setup, fun before_all/0, []}},
         
       {"when started",
@@ -37,7 +37,7 @@ describe_restfulierl_test_() ->
             fun should_post_resource_to_one_of_its_transitions/0}
         ]},
               
-      {"before tests",
+      {"after tests",
         {setup, fun after_all/0, []}}
     ]}.
 
