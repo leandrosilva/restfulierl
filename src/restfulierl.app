@@ -11,9 +11,9 @@
  [{description, "Restfulierl, a member of Restfulie initiative"},
   {vsn,"0.0.1"},
   {modules, [
-		restfulierl,
-		restfulierl_deps
-		]},
+    restfulierl,
+    restfulierl_deps
+    ]},
   {registered, []},
   {env, []},
   {applications, [kernel, stdlib, inets, xmerl]}]}.

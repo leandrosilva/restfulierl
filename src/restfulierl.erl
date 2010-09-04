@@ -29,16 +29,16 @@
 start() ->
     restfulierl_deps:ensure(),
     ensure_started(inets),
-		ensure_started(xmerl),
-		ok.
+    ensure_started(xmerl),
+    ok.
 
 %% @spec stop() -> ok
 %% @doc Stop the Restfulierl application and dependencies (take care!).
 stop() ->
-	Res = application:stop(restfulierl),
-	application:stop(xmerl),
-	application:stop(inets),
-	Res.
+  Res = application:stop(restfulierl),
+  application:stop(xmerl),
+  application:stop(inets),
+  Res.
 
 %%
 %% External API
@@ -47,36 +47,36 @@ stop() ->
 %% @spec get_resource(Uri) -> Resource
 %% @doc Get a resource from specified Uri.
 get_resource(Uri) ->
-	HttpResponse = http:request(Uri),
-	
-	_Resource = restfulierl_resource:from_http_response(Uri, HttpResponse).
+  HttpResponse = http:request(Uri),
+  
+  _Resource = restfulierl_resource:from_http_response(Uri, HttpResponse).
 
 %% @spec post_resource(Resource) -> Response
 %% @doc Post a resource to Resource#resource.uri.
 post_resource(Resource) ->
-	post_resource(Resource, Resource#resource.uri).
+  post_resource(Resource, Resource#resource.uri).
 
 %% @spec post_resource(Resource, Uri) -> Response
 %% @doc Post a resource to specified Uri.
 post_resource(Resource, Uri) when is_list(Uri) ->
-	{resource, _, ResourceState, _} = Resource,
+  {resource, _, ResourceState, _} = Resource,
 
-	_HttpResponse = restfulierl_resource:get_http_response(post, Uri, ResourceState);
-	
+  _HttpResponse = restfulierl_resource:get_http_response(post, Uri, ResourceState);
+  
 %% @spec post_resource(Resource, Transition) -> Response
 %% @doc Post a resource to specified Transition.
 post_resource(_Resource, _Transition) when is_atom(_Transition) ->
-	yet_not_implemented.
+  yet_not_implemented.
 
 %% @spec put_resource(Resource) -> Response
 %% @doc Put a resource to Resource#resource.uri.
 put_resource(_Resource) ->
-	yet_not_implemented.
+  yet_not_implemented.
 
 %% @spec delete_resource(Resource) -> Response
 %% @doc Delete a resource from Resource#resource.uri.
 delete_resource(_Resource) ->
-	yet_not_implemented.
+  yet_not_implemented.
 
 %%
 %% Internal API

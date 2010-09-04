@@ -25,7 +25,7 @@
 
 %% marshal a resource record to a xml
 to_xml(ResourceState) ->
-	_Xml = lists:flatten(xmerl:export_simple([ResourceState], xmerl_xml)).
+  _Xml = lists:flatten(xmerl:export_simple([ResourceState], xmerl_xml)).
 
 %%
 %% Internal APIs
